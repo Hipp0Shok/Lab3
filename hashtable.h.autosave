@@ -105,7 +105,6 @@ unsigned int HashTable<char*, float>::hash(char* const &key)
 {
     unsigned int i = 0;
     unsigned int answer = 0;
-    std::cout << "Ya pidoras" << std::endl;
     while(key[i])
     {
         answer += static_cast<unsigned int>(key[i]);

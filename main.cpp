@@ -54,6 +54,9 @@ int main()
     table.deleteAll();
     assert(table.getLength() == 0);
     assert(table != table2);
+    HashTable<char*, float> sec;
+    sec.addPair("Puten", 15.4F);
+    output(sec);
     std::cout << "All is OK!" << std::endl;
     return 0;
 }
