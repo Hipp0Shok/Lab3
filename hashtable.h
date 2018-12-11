@@ -52,20 +52,20 @@ public:
     class Iterator
     {
     public:
-      Iterator();
-      ~Iterator();
-      friend HashTable;
-      Iterator(Iterator const &);
-      Iterator(Node*, const HashTable *parent);
-      Iterator& operator ++();
-      Iterator operator ++(int);
-      bool operator == (Iterator const &) const;
-      bool operator != (Iterator const &) const;
-      T1 operator *();
-      T2 getValue() const;
-   private:
-      Node *node;
-      const HashTable *parent;
+        Iterator();
+        ~Iterator();
+        friend HashTable;
+        Iterator(Iterator const &);
+        Iterator(Node*, const HashTable *parent);
+        Iterator& operator ++();
+        Iterator operator ++(int);
+        bool operator == (Iterator const &) const;
+        bool operator != (Iterator const &) const;
+        T1 operator *();
+        T2 getValue() const;
+    private:
+        Node *node;
+        const HashTable *parent;
     };
     friend Iterator;
     HashTable();
@@ -89,7 +89,8 @@ private:
     {
         T2* object;
         T1* key;
-        Node* next = nullptr;
+        Node* next;
+        Node();
         ~Node();
     };
     unsigned int length;
@@ -97,6 +98,14 @@ private:
     Node** hashTable;
 
 };
+
+template<typename T1, typename T2>
+HashTable<T1, T2>::Node::Node()
+{
+    object = nullptr;
+    key = nullptr;
+    next = nullptr;
+}
 
 template<typename T1, typename T2>
 unsigned int HashTable<T1, T2>::hash(T1 const &key)
@@ -134,8 +143,8 @@ HashTable<T1, T2>::~HashTable()
     {
         if(hashTable[i])
         {
-        delete hashTable[i];
-        hashTable[i] = nullptr;
+            delete hashTable[i];
+            hashTable[i] = nullptr;
         }
     }
 }
@@ -150,39 +159,34 @@ HashTable<T1, T2>::~HashTable()
 template<typename T1, typename T2>
 void HashTable<T1, T2>::addPair(T1 const &key, T2 const &value)
 {
-    unsigned int bucket;
-    bucket = hash(key) % tableSize;
-    Node* existingNode;
-    if(hashTable[bucket])
-    {
-        existingNode = hashTable[bucket];
-    }
-    else
-    {
-        existingNode = nullptr;
-    }
+    unsigned int bucket = hash(key) % tableSize;
+    Node *existing;
     if(isPresent(key))
     {
-
-       while(existingNode)
-       {
-           if(*(existingNode->key) == key)
-           {
-               *(existingNode->object) = value;
-               break;
-           }
-       }
+        existing = hashTable[bucket];
+        while(existing)
+        {
+            if(*(existing->key) == key )
+            {
+                break;
+            }
+        }
+        *(existing->object) += value;
     }
     else
     {
-        Node* newNode = new Node;
+        existing = new Node();
+        existing->object = new T2(value);
+        existing->key = new T1(key);
         if(hashTable[bucket])
         {
-            newNode->next = existingNode;
+            existing->next = hashTable[bucket];
         }
-        hashTable[bucket] = newNode;
-        newNode->object = new T2(value);
-        newNode->key = new T1(key);
+        else
+        {
+            existing->next = nullptr;
+        }
+        hashTable[bucket] = existing;
         length++;
     }
 }
@@ -218,8 +222,8 @@ void HashTable<T1, T2>::deleteKey(T1 const key)
         Node* previous = nullptr;
         if(!(current->next))
         {
-                delete current;
-                hashTable[bucket] = nullptr;
+            delete current;
+            hashTable[bucket] = nullptr;
         }
         else
         {
@@ -297,7 +301,7 @@ bool HashTable<T1, T2>::operator==(HashTable const &existing) const
             {
                 if(this->operator[](key) != existing[key])
                 {
-                        return false;
+                    return false;
                 }
             }
         }

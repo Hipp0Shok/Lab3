@@ -26,15 +26,13 @@ int main()
     std::cout << "2" << std::endl;
     assert(table.getLength() == 1);
     table.addPair(1, 2);
-        std::cout << "3" << std::endl;
+    std::cout << "3" << std::endl;
     assert((table.getLength() == 1));
     table.addPair(3, 5);
     std::cout << "4" << std::endl;
     assert(table.isPresent(1));
     assert(!table.isPresent(2));
-
     table.deleteKey(1);
-
     assert(!table.isPresent(1));
     assert(table[3] == 5);
     HashTable<int, int> table2(table);
