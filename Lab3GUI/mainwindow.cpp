@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "QTableWidget"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,4 +16,22 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::updateTable()
+{
+    HashTable<char*, float>::Iterator iter;
+    QTableWidgetItem *object;
+    if(table.getLength() != 0)
+    {
+        iter = table.begin();
+        int i = 0;
+        do
+        {
+            object = new QTableWidgetItem(QString(*iter));
+            ui->tableWidget->setItem(i, 0, object);
+            object = new QTableWidgetItem(QString::number(iter.getValue()));
+            ui->tableWidget->setItem(i, 1, object);
+        }while(iter++ != table.end());
+    }
 }
