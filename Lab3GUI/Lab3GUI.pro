@@ -27,14 +27,20 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    ../hashtable.cpp
+    ../hashtable.cpp \
+    betwindow.cpp \
+    profitwindow.cpp
 
 HEADERS += \
         mainwindow.h \
-    ../hashtable.h
+    ../hashtable.h \
+    betwindow.h \
+    profitwindow.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    betwindow.ui \
+    profitwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

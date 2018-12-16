@@ -3,6 +3,7 @@
 #include "QTableWidget"
 #include "QFileDialog"
 #include "fstream"
+#include "profitwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     connect(ui->openButton, SIGNAL(clicked()), this, SLOT(openFile()));
     connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveFile()));
+    connect(ui->addButton, SIGNAL(clicked()), this, SLOT(makeAddWindow()));
+    connect(ui->profitButton, SIGNAL(clicked()), this, SLOT(profit()));
+    ui->saveButton->setDisabled(true);
+    ui->profitButton->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -24,19 +29,23 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateTable()
 {
-    HashTable<char*, float>::Iterator iter;
+    HashTable<std::string, int>::Iterator iter;
     QTableWidgetItem *object;
     if(table.getLength() != 0)
     {
         iter = table.begin();
         ui->tableWidget->setRowCount(table.getLength());
+        ui->saveButton->setDisabled(false);
+        ui->profitButton->setDisabled(false);
         int i = 0;
         do
         {
             object = new QTableWidgetItem();
+            object->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
             object->setText(QString::fromStdString(*iter));
             ui->tableWidget->setItem(i, 0, object);
             object = new QTableWidgetItem();
+             object->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
             object->setText(QString::number(iter.getValue()));
             ui->tableWidget->setItem(i, 1, object);
             i++;
@@ -69,4 +78,18 @@ void MainWindow::saveFile()
         file << table;
         file.close();
     }
+}
+
+void MainWindow::makeAddWindow()
+{
+    BetWindow *win;
+    win = new BetWindow(&table, this);
+    win->setWindowTitle("Add Bet");
+    win->show();
+}
+
+void MainWindow::profit()
+{
+    ProfitWindow *win = new ProfitWindow(table.bankProfit(), this);
+    win->show();
 }

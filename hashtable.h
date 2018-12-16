@@ -371,9 +371,20 @@ template<typename T1, typename T2>
 typename HashTable<T1, T2>::Iterator& HashTable<T1, T2>::Iterator::operator ++()
 {
     unsigned int i;
+    HashTable<T1, T2>::Node *temp;
+    if(node->next != nullptr)
+    {
+        node = node->next;
+        return *this;
+    }
     for( i = 0; i < parent->tableSize; i++)
     {
-        if(parent->hashTable[i] == node)
+        temp = parent->hashTable[i];
+        while(temp && temp != node)
+        {
+            temp = temp->next;
+        }
+        if(temp)
         {
             break;
         }
@@ -395,9 +406,20 @@ typename HashTable<T1, T2>::Iterator HashTable<T1, T2>::Iterator::operator++(int
 {
     unsigned int i;
     HashTable<T1, T2>::Iterator prev = *this;
+    HashTable<T1, T2>::Node *temp;
+    if(node->next != nullptr)
+    {
+        node = node->next;
+        return prev;
+    }
     for( i = 0; i < parent->tableSize; i++)
     {
-        if(parent->hashTable[i] == node)
+        temp = parent->hashTable[i];
+        while(temp && temp != node)
+        {
+            temp = temp->next;
+        }
+        if(temp)
         {
             break;
         }
@@ -473,7 +495,10 @@ typename HashTable<T1, T2>::Iterator HashTable<T1, T2>::end()
             i--;
         }
         iter = new HashTable<T1, T2>::Iterator(hashTable[i], this);
-
+        while(iter->node->next)
+        {
+            iter->node = iter->node->next;
+        }
     }
     return *iter;
 }

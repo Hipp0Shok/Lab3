@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "D:\study\info\Lab3\hashtable.h"
+#include "string.h"
+#include "betwindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,10 +20,13 @@ public:
     void updateTable();
 private:
     Ui::MainWindow *ui;
-    HashTable<char*, float> table;
+    HashTable<std::string, int> table;
 public slots:
     void openFile();
     void saveFile();
+    void makeAddWindow();
+    void profit();
+
 };
 
 #endif // MAINWINDOW_H
