@@ -3,9 +3,11 @@
 #include "fstream"
 #include "cmath"
 #include <iostream>
+#include "string.h"
 
 template<typename T1, typename T2>
 class HashTable;
+
 
 template<typename T1, typename T2>
 std::ofstream& operator << (std::ofstream& stream, HashTable<T1, T2> const & existing)
@@ -81,7 +83,7 @@ public:
     bool operator == (HashTable const &) const;
     bool operator != (HashTable const &) const;
     T2& operator [] (T1 const &) const;
-    static unsigned int hash(T1 const &key);
+
     friend std::ofstream& operator << <T1, T2> (std::ofstream&, HashTable const &);
     friend std::ifstream& operator >> <T1, T2> (std::ifstream& stream, HashTable &existing);
     T2 bankProfit() const;
@@ -100,19 +102,7 @@ private:
 
 };
 
-template<>
-unsigned int HashTable<char*, float>::hash(char* const &key)
-{
-    unsigned int i = 0;
-    unsigned int answer = 0;
-    std::cout << "Ya pidoras" << std::endl;
-    while(key[i])
-    {
-        answer += static_cast<unsigned int>(key[i]);
-        i++;
-    }
-    return(static_cast<unsigned int>(1024*fmod(answer*0.618033, 1)));
-}
+
 
 template<typename T1, typename T2>
 HashTable<T1, T2>::Node::Node()
@@ -121,12 +111,17 @@ HashTable<T1, T2>::Node::Node()
     key = nullptr;
     next = nullptr;
 }
-
-template<typename T1, typename T2>
-unsigned int HashTable<T1, T2>::hash(T1 const &key)
+/*
+unsigned int hash(const std::string const &key);
+*/
+template<typename T1>
+unsigned int hash(T1 const &key)
 {
     return(static_cast<unsigned int>(1024*fmod(key*0.618033, 1)));
 }
+
+template<>
+unsigned int hash<std::string>(std::string const &key);
 
 template<typename T1, typename T2>
 HashTable<T1, T2>::HashTable():
@@ -144,7 +139,7 @@ template<typename T1, typename T2>
 HashTable<T1, T2>::Node::~Node()
 {
     delete object;
-    delete [] key;
+    delete key;
     if(next)
     {
         delete next;

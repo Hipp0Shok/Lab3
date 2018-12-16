@@ -19,7 +19,7 @@ void output(HashTable<T1, T2> &existing)
 
 int main()
 {
-    HashTable<int, int> table;
+    /*HashTable<int, int> table;
     assert(table.getLength() == 0);
     std::cout << "1" << std::endl;
     table.addPair(1, 1);
@@ -54,9 +54,23 @@ int main()
     table.deleteAll();
     assert(table.getLength() == 0);
     assert(table != table2);
-    HashTable<char*, float> sec;
+    HashTable<std::string, float> sec;
     sec.addPair("Puten", 15.4F);
     output(sec);
-    std::cout << "All is OK!" << std::endl;
+    std::cout << "All is OK!" << std::endl;*/
+   HashTable<std::string, float> table;
+    table.addPair("Pupa", 228);
+    table.addPair("Lupa", 1488);
+    table.addPair("123", 456);
+    std::ofstream file;
+    file.open("TestTable.txt", std::ios::out);
+    file << table;
+    file.close();
+    output(table);
+    HashTable<std::string, float> table2;
+    std::ifstream file2;
+    file2.open("TestTable.txt", std::ios::in);
+    file2 >> table2;
+    output(table2);
     return 0;
 }
