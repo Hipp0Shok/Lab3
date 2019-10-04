@@ -51,6 +51,10 @@ void MainWindow::updateTable()
             i++;
         }while(iter++ != table.end());
     }
+    else {
+        ui->saveButton->setDisabled(true);
+        ui->profitButton->setDisabled(true);
+    }
 }
 
 void MainWindow::openFile()

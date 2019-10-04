@@ -83,7 +83,6 @@ public:
     bool operator == (HashTable const &) const;
     bool operator != (HashTable const &) const;
     T2& operator [] (T1 const &) const;
-
     friend std::ofstream& operator << <T1, T2> (std::ofstream&, HashTable const &);
     friend std::ifstream& operator >> <T1, T2> (std::ifstream& stream, HashTable &existing);
     T2 bankProfit() const;

@@ -5,6 +5,7 @@
 #include "D:\study\info\Lab3\hashtable.h"
 #include "string.h"
 #include "betwindow.h"
+#include "stdio.h"
 
 namespace Ui {
 class MainWindow;

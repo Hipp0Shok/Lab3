@@ -23,8 +23,27 @@ BetWindow::~BetWindow()
 
 void BetWindow::addBet()
 {
-    table->addPair(ui->nameEdit->text().toStdString(), ui->betEdit->text().toInt());
-    static_cast<MainWindow*>(parent())->updateTable();
-    this->close();
+    QPalette warningPalette, defaultPallete;
+    warningPalette.setColor(QPalette::Base, Qt::red);
+    if(ui->nameEdit->text().isEmpty())
+    {
+        ui->nameEdit->setPalette(warningPalette);
+
+    }
+    else {
+        ui->nameEdit->setPalette(defaultPallete);
+        if(ui->betEdit->text().toInt() == 0)
+        {
+            ui->betEdit->setPalette(warningPalette);
+        }
+        else
+        {
+            table->addPair(ui->nameEdit->text().toStdString(), ui->betEdit->text().toInt());
+            static_cast<MainWindow*>(parent())->updateTable();
+            this->close();
+        }
+    }
+
+
 }
 
